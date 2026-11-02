@@ -1,0 +1,52 @@
+#4) CC
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import AgglomerativeClustering
+from scipy.cluster.hierarchy import dendrogram, linkage
+
+
+df = pd.read_csv("CC GENERAL.txt")
+print(df.head())
+print(df.shape)
+
+df = df.drop("CUST_ID", axis=1)
+df = df.fillna(df.median(numeric_only=True))
+print(df.isnull().sum().sum())
+
+scaler = StandardScaler()
+scaled_data = scaler.fit_transform(df)
+
+
+model = AgglomerativeClustering(
+    n_clusters=3,
+    linkage='ward'
+)
+
+clusters = model.fit_predict(scaled_data)
+
+df['Cluster'] = clusters
+
+print(df[['Cluster']].head())
+
+
+
+
+print(df['Cluster'].value_counts())
+
+
+sample = scaled_data[:100]
+
+linked = linkage(sample, method='ward')
+
+plt.figure(figsize=(12, 6))
+
+dendrogram(linked)
+
+plt.title("Dendrogram")
+plt.xlabel("Data Points")
+plt.ylabel("Euclidean Distance")
+
+plt.show()

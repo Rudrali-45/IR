@@ -1,0 +1,31 @@
+#1)Problem Statement: Write a program for pre-processing of a text document such as stop word
+removal, stemming.
+
+
+import nltk
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+
+nltk.download('stopwords')
+
+# Input document
+text = "The students are studying and playing games"
+
+# Convert into words
+words = text.lower().split()
+
+# Stop word removal
+stop_words = set(stopwords.words('english'))
+
+filtered_words = [word for word in words if word not in stop_words]
+
+print("After Stop Word Removal:")
+print(filtered_words)
+
+# Stemming
+ps = PorterStemmer()
+
+stemmed_words = [ps.stem(word) for word in filtered_words]
+
+print("After Stemming:")
+print(stemmed_words)
